@@ -1,0 +1,13 @@
+#日志配置
+logrus:
+  level: ${LOG_LEVEL:trace}
+  filename: ${LOG_PATH:logs/app.log} #日志文件的路径和文件名
+  maxSize: ${LOG_MAXSIZE:50} #每个日志文件的最大大小（以 MB 为单位）
+  maxBackups: ${LOG_MAX_BACKUPS:100} # 保留的旧日志文件的最大数目
+  maxAge: ${LOG_MAX_AGE:15}  #保留的旧日志文件的最大天数
+
+webapi:
+  url-path-root: iot-streaming/api
+  port: 9966
+
+
