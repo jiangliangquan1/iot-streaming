@@ -131,15 +131,17 @@ func (web *WebApiServer) doSetInterceptors(registry *InterceptorRegister) error 
 
 			if matchInterceptorPathPattern(v.GetIncludePatterns(), v.GetExcludePatterns(), context.Request.URL.Path) {
 
-				if !v.GetInterceptor().PreHandle(context) {
-					context.Abort()
+				bRet, code := v.GetInterceptor().PreHandle(context)
+				if !bRet {
+					context.AbortWithStatus(code)
 					return
 				}
 
 				context.Next()
 
-				if !v.GetInterceptor().PostHandle(context) {
-					context.Abort()
+				bRet1, code1 := v.GetInterceptor().PostHandle(context)
+				if !bRet1 {
+					context.AbortWithStatus(code1)
 					return
 				}
 
