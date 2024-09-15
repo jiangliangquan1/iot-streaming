@@ -12,7 +12,9 @@ type WebApiConfigurer struct {
 
 func (w *WebApiConfigurer) AddInterceptors(registry *webapi.InterceptorRegister) {
 	registry.AddInterceptor(w.userAuthInterceptor).AddPathPatterns("/**").
-		ExcludePathPatterns("/iot-streaming/api/v1/users/sign-up", "/iot-streaming/api/v1/users/login")
+		ExcludePathPatterns("/iot-streaming/api/v1/users/sign-up",
+			"/iot-streaming/api/v1/users/login",
+			"/iot-streaming/api/v1/zl_hook/**")
 }
 
 func (w *WebApiConfigurer) AddCorsMappings(registry *webapi.CorsRegistry) {

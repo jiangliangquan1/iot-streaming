@@ -31,6 +31,8 @@ func NewDataBase(options *ConnectOptions, l *logrus.Logger) *gorm.DB {
 	}
 
 	return db
+
+	//return nil
 }
 
 func getDialector(options *ConnectOptions) gorm.Dialector {

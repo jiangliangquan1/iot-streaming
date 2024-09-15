@@ -12,7 +12,8 @@ import (
 	"github.com/jiangliangquan1/iot-streaming/repository"
 	"github.com/jiangliangquan1/iot-streaming/viperex"
 	"github.com/jiangliangquan1/iot-streaming/webapi"
-	"github.com/jiangliangquan1/iot-streaming/zlwebhook"
+	"github.com/jiangliangquan1/iot-streaming/zlmediaserver"
+	"github.com/jiangliangquan1/iot-streaming/zlmediaserver/zlwebhook"
 )
 
 var ProviderSet = wire.NewSet(
@@ -35,6 +36,9 @@ var ProviderSet = wire.NewSet(
 	userauth.NewJwtManager,
 	userauth.NewUserAuthInterceptor,
 	devices.NewDeviceService,
+	repository.NewZlMediaServerRepository,
+	zlmediaserver.NewListService,
+	zlmediaserver.NewListController,
 	NewIotStreamingApp,
 )
 

@@ -7,7 +7,8 @@ import (
 	"github.com/jiangliangquan1/iot-streaming/logger"
 	"github.com/jiangliangquan1/iot-streaming/viperex"
 	"github.com/jiangliangquan1/iot-streaming/webapi"
-	"github.com/jiangliangquan1/iot-streaming/zlwebhook"
+	"github.com/jiangliangquan1/iot-streaming/zlmediaserver"
+	"github.com/jiangliangquan1/iot-streaming/zlmediaserver/zlwebhook"
 )
 
 func ProvideViperExOption(configfile string) *viperex.Option {
@@ -42,11 +43,14 @@ func ProvideWebApiServerOption(v *viperex.ViperEx, c webapi.WebApiConfigurer) *w
 type ControllerAddNone struct {
 }
 
-func ProvideApiControllers(c1 *zlwebhook.ZlWebHookController, c2 *devices.DeviceController, c3 *userauth.UserController) []webapi.ApiController {
+func ProvideApiControllers(c1 *zlwebhook.ZlWebHookController,
+	c2 *devices.DeviceController,
+	c3 *userauth.UserController,
+	c4 *zlmediaserver.ListController) []webapi.ApiController {
 
 	var list []webapi.ApiController
 
-	list = append(list, c1, c2, c3)
+	list = append(list, c1, c2, c3, c4)
 
 	return list
 

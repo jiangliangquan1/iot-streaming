@@ -15,7 +15,8 @@ import (
 	"github.com/jiangliangquan1/iot-streaming/repository"
 	"github.com/jiangliangquan1/iot-streaming/viperex"
 	"github.com/jiangliangquan1/iot-streaming/webapi"
-	"github.com/jiangliangquan1/iot-streaming/zlwebhook"
+	"github.com/jiangliangquan1/iot-streaming/zlmediaserver"
+	"github.com/jiangliangquan1/iot-streaming/zlmediaserver/zlwebhook"
 )
 
 // Injectors from wire.go:
@@ -38,7 +39,10 @@ func InitializeApp(configfile string) App {
 	deviceController := devices.NewDeviceController(logrusLogger, deviceService)
 	userService := userauth.NewUserService(userRepository, logrusLogger, jwtManager)
 	userController := userauth.NewUserController(userService)
-	v := ProvideApiControllers(zlWebHookController, deviceController, userController)
+	zlMediaServerRepository := repository.NewZlMediaServerRepository(db)
+	listService := zlmediaserver.NewListService(zlMediaServerRepository, logrusLogger)
+	listController := zlmediaserver.NewListController(listService)
+	v := ProvideApiControllers(zlWebHookController, deviceController, userController, listController)
 	iWebApiServer := webapi.NewWebApiServer(webApiServerOption, logrusLogger, v)
 	app := NewIotStreamingApp(iWebApiServer)
 	return app
@@ -49,5 +53,5 @@ func InitializeApp(configfile string) App {
 var ProviderSet = wire.NewSet(
 	ProvideViperExOption, viperex.NewViperEx, ProvideLoggerConfigOption, logger.NewLogger, NewWebApiConfigurer,
 	ProvideWebApiServerOption, zlwebhook.NewZlWebHookController, devices.NewDeviceController, webapi.NewWebApiServer, ProvideApiControllers,
-	ProvideDatabaseConnectOptions, database.NewDataBase, repository.NewDeviceRepository, repository.NewUserRepository, userauth.NewUserService, userauth.NewUserController, userauth.NewJwtManager, userauth.NewUserAuthInterceptor, devices.NewDeviceService, NewIotStreamingApp,
+	ProvideDatabaseConnectOptions, database.NewDataBase, repository.NewDeviceRepository, repository.NewUserRepository, userauth.NewUserService, userauth.NewUserController, userauth.NewJwtManager, userauth.NewUserAuthInterceptor, devices.NewDeviceService, repository.NewZlMediaServerRepository, zlmediaserver.NewListService, zlmediaserver.NewListController, NewIotStreamingApp,
 )
